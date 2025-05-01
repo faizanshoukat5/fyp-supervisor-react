@@ -1,8 +1,9 @@
 import React from "react";
+import SectionContainer from "../../layouts/SectionContainer";
 
 const HowItWorks = () => {
   return (
-    <section className="py-10 bg-gray-100">
+    <SectionContainer className="bg-gray-100">
       <h2 className="text-2xl font-bold text-center mb-6">How It Works</h2>
       <div className="max-w-4xl mx-auto space-y-4">
         <div className="flex items-center space-x-4">
@@ -18,7 +19,7 @@ const HowItWorks = () => {
           <p>Connect, collaborate, and manage your FYP projects efficiently.</p>
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 
