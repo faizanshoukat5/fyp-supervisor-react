@@ -1,28 +1,27 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 import Home from "./components/views/home/Home";
-import SectionContainer from "./components/layouts/SectionContainer";
-import CardLayout from "./components/layouts/CardLayout";
+import Supervisors from "./components/pages/Supervisors";
+import Projects from "./components/pages/Projects";
+import Login from "./components/pages/Login";
+import Logo from "./components/layouts/Logo";  
 
 function App() {
   return (
-    <Router>
+    <div className="min-h-screen flex flex-col bg-white">
       <NavBar />
-      <main className="mt-16">
-        <SectionContainer className="bg-gray-100">
-          <CardLayout>
-            <Routes>
-              {/* Route for the Home page */}
-              <Route path="/" element={<Home />} />
-              {/* Add more routes here for other views */}
-            </Routes>
-          </CardLayout>
-        </SectionContainer>
+      <main className="flex-grow pt-16">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/supervisors" element={<Supervisors />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </main>
       <Footer />
-    </Router>
+    </div>
   );
 }
 
