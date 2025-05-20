@@ -7,55 +7,55 @@ const SupervisorHighlights = () => {
     { 
       name: "Dr. Ayesha Khan",
       expertise: "Artificial Intelligence",
-      location: "Karachi",
+      location: "UOL Lahore",
       projects: ["AI Healthcare", "Machine Learning"]
     },
     { 
       name: "Dr. Ahmed Ali",
       expertise: "Cybersecurity",
-      location: "Lahore",
+      location: "UOL Lahore",
       projects: ["Network Security", "Blockchain"]
     },
     { 
       name: "Dr. Fatima Malik",
       expertise: "Software Engineering",
-      location: "Islamabad",
+      location: "UOL Lahore",
       projects: ["DevOps", "Cloud Computing"]
     },
     { 
       name: "Dr. Hassan Raza",
       expertise: "Data Science",
-      location: "Lahore",
+      location: "UOL Lahore",
       projects: ["Big Data Analytics", "Data Mining"]
     },
     { 
       name: "Dr. Sarah Ahmad",
       expertise: "IoT & Embedded Systems",
-      location: "Karachi",
+      location: "UOL Lahore",
       projects: ["Smart Home Systems", "Industrial IoT"]
     },
     { 
       name: "Dr. Usman Khalid",
       expertise: "Web Technologies",
-      location: "Islamabad",
+      location: "UOL Lahore",
       projects: ["Full Stack Development", "Progressive Web Apps"]
     },
     { 
       name: "Dr. Zainab Hassan",
       expertise: "Mobile Computing",
-      location: "Lahore",
+      location: "UOL Lahore",
       projects: ["Mobile App Development", "Cross-platform Apps"]
     },
     { 
       name: "Dr. Omar Shah",
       expertise: "Game Development",
-      location: "Karachi",
+      location: "UOL Lahore",
       projects: ["3D Game Design", "AR/VR Applications"]
     },
     { 
       name: "Dr. Maryam Nawaz",
       expertise: "Computer Vision",
-      location: "Islamabad",
+      location: "UOL Lahore",
       projects: ["Image Processing", "Pattern Recognition"]
     }
   ];

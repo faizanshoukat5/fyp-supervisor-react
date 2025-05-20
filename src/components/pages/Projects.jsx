@@ -2,12 +2,24 @@ import React, { useState, useEffect } from "react";
 import SectionContainer from "../layouts/SectionContainer";
 import CardLayout from "../layouts/CardLayout";
 import { db } from "../../config/firebaseConfig";
-import { collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDomain, setFilterDomain] = useState("All");
   const [products, setProducts] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newProject, setNewProject] = useState({
+    title: "",
+    supervisor: "",
+    domain: "",
+    description: "",
+    status: "Available",
+    duration: "",
+    team: "",
+    requirements: [],
+    tags: []
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,141 +29,46 @@ const Projects = () => {
     fetchProducts();
   }, []);
 
-  const handleAddProduct = async (product) => {
+  const handleAddProduct = async (project) => {
     try {
-      await addDoc(collection(db, "products"), product);
+      await addDoc(collection(db, "products"), project);
       alert("Product added successfully!");
+      setShowAddForm(false);
+      setNewProject({
+        title: "",
+        supervisor: "",
+        domain: "",
+        description: "",
+        status: "Available",
+        duration: "",
+        team: "",
+        requirements: [],
+        tags: []
+      });
+      // Refresh products after adding
+      const querySnapshot = await getDocs(collection(db, "products"));
+      setProducts(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     } catch (error) {
       alert("Failed to add product.");
     }
   };
 
   const handleDeleteProduct = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this project?")) return;
     try {
       await deleteDoc(doc(db, "products", id));
       alert("Product deleted successfully!");
-      // Optionally refresh list or navigate away
+      // Refresh products after deleting
+      const querySnapshot = await getDocs(collection(db, "products"));
+      setProducts(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     } catch (error) {
       alert("Failed to delete product.");
     }
   };
 
-  const projects = [
-    {
-      title: "AI-Powered Healthcare System",
-      supervisor: "Dr. Ayesha Khan",
-      domain: "Artificial Intelligence",
-      description: "Developing an intelligent healthcare system for early disease detection using machine learning algorithms.",
-      status: "Available",
-      duration: "8 months",
-      team: "2-3 students",
-      requirements: ["Python", "TensorFlow", "Healthcare Domain Knowledge"],
-      tags: ["AI", "Healthcare", "Machine Learning"]
-    },
-    {
-      title: "Blockchain-based Supply Chain",
-      supervisor: "Dr. Ahmed Ali",
-      domain: "Blockchain",
-      description: "Implementing a secure and transparent supply chain management system using blockchain technology.",
-      status: "Available",
-      duration: "6 months",
-      team: "2-4 students",
-      requirements: ["Solidity", "Web3.js", "Smart Contracts"],
-      tags: ["Blockchain", "Supply Chain", "Web3"]
-    },
-    {
-      title: "Smart Home Automation",
-      supervisor: "Dr. Fatima Malik",
-      domain: "IoT",
-      description: "Creating an IoT-based home automation system with voice control and energy monitoring.",
-      status: "Available",
-      duration: "7 months",
-      team: "2-3 students",
-      requirements: ["Arduino", "Raspberry Pi", "IoT Protocols"],
-      tags: ["IoT", "Automation", "Embedded Systems"]
-    },
-    {
-      title: "Cybersecurity Risk Assessment Tool",
-      supervisor: "Dr. Usman Khan",
-      domain: "Cybersecurity",
-      description: "Developing a tool for automated security risk assessment in enterprise networks.",
-      status: "Available",
-      duration: "8 months",
-      team: "2-3 students",
-      requirements: ["Network Security", "Python", "Risk Analysis"],
-      tags: ["Security", "Network", "Analysis"]
-    },
-    {
-      title: "Data Analytics Platform",
-      supervisor: "Dr. Hassan Raza",
-      domain: "Data Science",
-      description: "Building a comprehensive data analytics platform with real-time visualization and predictive modeling capabilities.",
-      status: "Available",
-      duration: "8 months",
-      team: "2-3 students",
-      requirements: ["Python", "Machine Learning", "Data Visualization"],
-      tags: ["Data Science", "Analytics", "ML"]
-    },
-    {
-      title: "Smart Industrial IoT System",
-      supervisor: "Dr. Sarah Ahmad",
-      domain: "IoT",
-      description: "Developing an industrial IoT system for manufacturing process optimization and predictive maintenance.",
-      status: "Limited",
-      duration: "9 months",
-      team: "3-4 students",
-      requirements: ["IoT Protocols", "Embedded Systems", "Industrial Automation"],
-      tags: ["IoT", "Industry 4.0", "Automation"]
-    },
-    {
-      title: "Progressive Web Application Framework",
-      supervisor: "Dr. Usman Khalid",
-      domain: "Web Technologies",
-      description: "Creating a modern PWA framework with advanced caching strategies and offline capabilities.",
-      status: "Available",
-      duration: "7 months",
-      team: "2-3 students",
-      requirements: ["JavaScript", "React", "Service Workers"],
-      tags: ["Web Dev", "PWA", "Frontend"]
-    },
-    {
-      title: "Cross-Platform Mobile Solution",
-      supervisor: "Dr. Zainab Hassan",
-      domain: "Mobile Computing",
-      description: "Developing a cross-platform mobile application framework with native performance capabilities.",
-      status: "Available",
-      duration: "8 months",
-      team: "2-3 students",
-      requirements: ["React Native", "Mobile Development", "API Integration"],
-      tags: ["Mobile", "Cross-platform", "Apps"]
-    },
-    {
-      title: "Virtual Reality Game Engine",
-      supervisor: "Dr. Omar Shah",
-      domain: "Game Development",
-      description: "Building a VR game engine with advanced physics simulation and multiplayer capabilities.",
-      status: "Limited",
-      duration: "10 months",
-      team: "3-4 students",
-      requirements: ["Unity3D", "C#", "VR Development"],
-      tags: ["VR", "Gaming", "3D"]
-    },
-    {
-      title: "Computer Vision AI System",
-      supervisor: "Dr. Maryam Nawaz",
-      domain: "Computer Vision",
-      description: "Implementing an advanced computer vision system for real-time object detection and tracking.",
-      status: "Available",
-      duration: "8 months",
-      team: "2-3 students",
-      requirements: ["Python", "OpenCV", "Deep Learning"],
-      tags: ["CV", "AI", "Deep Learning"]
-    }
-  ];
+  const domains = ["All", ...new Set(products.map(project => project.domain))];
 
-  const domains = ["All", ...new Set(projects.map(project => project.domain))];
-
-  const filteredProjects = projects.filter(project => {
+  const filteredProjects = products.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          project.supervisor.toLowerCase().includes(searchTerm.toLowerCase());
@@ -159,10 +76,30 @@ const Projects = () => {
     return matchesSearch && matchesDomain;
   });
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleArrayInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject(prev => ({
+      ...prev,
+      [name]: value.split(",").map(item => item.trim()).filter(Boolean)
+    }));
+  };
+
+  const handleSubmitNewProject = (e) => {
+    e.preventDefault();
+    handleAddProduct(newProject);
+  };
+
   return (
     <SectionContainer>
       <div className="py-12 max-w-7xl mx-auto">
-        {/* Header Section with Gradient */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Available FYP Projects
@@ -171,8 +108,119 @@ const Projects = () => {
             Explore innovative projects and find the perfect match for your final year
           </p>
         </div>
-        
-        {/* Enhanced Search and Filter Section */}
+
+        <div className="flex justify-end mb-6">
+          <button
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200"
+            onClick={() => setShowAddForm(!showAddForm)}
+          >
+            {showAddForm ? "Cancel" : "Add New Project"}
+          </button>
+        </div>
+
+        {showAddForm && (
+          <form
+            className="mb-12 bg-white p-6 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 gap-6"
+            onSubmit={handleSubmitNewProject}
+          >
+            <div>
+              <label className="block mb-1 font-medium">Title</label>
+              <input
+                type="text"
+                name="title"
+                value={newProject.title}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Supervisor</label>
+              <input
+                type="text"
+                name="supervisor"
+                value={newProject.supervisor}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Domain</label>
+              <input
+                type="text"
+                name="domain"
+                value={newProject.domain}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Status</label>
+              <select
+                name="status"
+                value={newProject.status}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+              >
+                <option value="Available">Available</option>
+                <option value="Limited">Limited</option>
+              </select>
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Duration</label>
+              <input
+                type="text"
+                name="duration"
+                value={newProject.duration}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Team</label>
+              <input
+                type="text"
+                name="team"
+                value={newProject.team}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Requirements (comma separated)</label>
+              <input
+                type="text"
+                name="requirements"
+                value={newProject.requirements.join(", ")}
+                onChange={handleArrayInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Tags (comma separated)</label>
+              <input
+                type="text"
+                name="tags"
+                value={newProject.tags.join(", ")}
+                onChange={handleArrayInputChange}
+                className="w-full px-4 py-2 border rounded-lg mb-3"
+              />
+            </div>
+            <div className="md:col-span-2 flex justify-end">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200"
+              >
+                Add Project
+              </button>
+            </div>
+          </form>
+        )}
+
         <div className="mb-12 flex flex-col md:flex-row gap-6 justify-center items-center bg-gray-50 p-6 rounded-xl shadow-sm">
           <div className="relative w-full md:w-96">
             <input
@@ -197,17 +245,23 @@ const Projects = () => {
           </select>
         </div>
 
-        {/* Projects Grid with Enhanced Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {filteredProjects.map((project, index) => (
-            <CardLayout key={index}>
+            <CardLayout key={project.id || index}>
               <div className="p-6 hover:transform hover:scale-[1.02] transition-all duration-300">
                 <div className="flex justify-between items-start mb-4">
                   <h2 className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
                     {project.title}
                   </h2>
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => handleDeleteProduct(project.id)}
+                    className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700 transition"
+                    title="Delete Project"
+                  >
+                    Delete
+                  </button>
                 </div>
-                
                 <div className="flex items-center gap-2 mb-4">
                   <img
                     className="h-8 w-8 rounded-full bg-gray-200"
@@ -219,9 +273,7 @@ const Projects = () => {
                     <p className="text-gray-600 text-sm">{project.domain}</p>
                   </div>
                 </div>
-
                 <p className="text-gray-700 mb-6 line-clamp-3">{project.description}</p>
-                
                 <div className="flex flex-wrap gap-2 mb-6">
                   <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
                     <span className="w-2 h-2 rounded-full bg-green-400 mr-2"></span>
@@ -240,7 +292,6 @@ const Projects = () => {
                     {project.team}
                   </span>
                 </div>
-
                 <div className="mb-6">
                   <h3 className="font-semibold text-gray-900 mb-3">Requirements:</h3>
                   <ul className="space-y-2">
@@ -254,7 +305,6 @@ const Projects = () => {
                     ))}
                   </ul>
                 </div>
-
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag, i) => (
                     <span key={i} className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">

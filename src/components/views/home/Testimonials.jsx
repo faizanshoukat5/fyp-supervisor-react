@@ -4,19 +4,19 @@ const testimonials = [
   {
     name: "Ali Raza",
     feedback: "This platform helped me find the perfect supervisor for my FYP. The process was smooth and efficient!",
-    university: "UOL",
+    university: "UOL Lahore",
     avatar: "https://randomuser.me/api/portraits/men/32.jpg"
   },
   {
     name: "Sara Khan",
     feedback: "I loved the advanced search and the communication tools. Highly recommended for all final year students.",
-    university: "FAST",
+    university: "UOL Lahore",
     avatar: "https://randomuser.me/api/portraits/women/44.jpg"
   },
   {
     name: "Bilal Ahmed",
     feedback: "The supervisor matching feature is a game changer. I completed my project with great guidance.",
-    university: "NUST",
+    university: "UOL Lahore",
     avatar: "https://randomuser.me/api/portraits/men/65.jpg"
   }
 ];

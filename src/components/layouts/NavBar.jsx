@@ -32,6 +32,7 @@ const NavBar = () => {
             >
               Home
             </Link>
+            
             <Link 
               to="/supervisors"
               className={`${
@@ -42,6 +43,7 @@ const NavBar = () => {
             >
               Supervisors
             </Link>
+
             <Link 
               to="/projects"
               className={`${
@@ -52,6 +54,18 @@ const NavBar = () => {
             >
               Projects
             </Link>
+
+            <Link 
+              to="/admin/faculty"
+              className={`${
+                isActive('/admin/faculty')
+                  ? 'text-white border-b-2 border-white'
+                  : 'text-blue-100 hover:text-white'
+              } px-3 py-2 text-sm font-medium transition-colors duration-200`}
+            >
+              Faculty Management
+            </Link>
+
             <Link 
               to="/login"
               className="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors duration-200"
@@ -59,6 +73,7 @@ const NavBar = () => {
               Login
             </Link>
           </div>
+
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -89,6 +104,7 @@ const NavBar = () => {
             </button>
           </div>
         </div>
+
         {isOpen && (
           <div className="md:hidden py-2">
             <Link 
@@ -98,6 +114,7 @@ const NavBar = () => {
             >
               Home
             </Link>
+
             <Link 
               to="/supervisors"
               className="block px-3 py-2 text-blue-100 hover:text-white font-medium"
@@ -105,6 +122,7 @@ const NavBar = () => {
             >
               Supervisors
             </Link>
+
             <Link 
               to="/projects"
               className="block px-3 py-2 text-blue-100 hover:text-white font-medium"
@@ -112,6 +130,15 @@ const NavBar = () => {
             >
               Projects
             </Link>
+
+            <Link 
+              to="/admin/faculty"
+              className="block px-3 py-2 text-blue-100 hover:text-white font-medium"
+              onClick={() => setIsOpen(false)}
+            >
+              Faculty Management
+            </Link>
+
             <Link 
               to="/login"
               className="block px-3 py-2 text-blue-100 hover:text-white font-medium"

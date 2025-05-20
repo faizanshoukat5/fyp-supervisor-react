@@ -3,9 +3,9 @@ import TestimonialBox from "./TestimonialBox";
 
 const StudentFeedback = () => {
   const feedbacks = [
-    { name: "Alice Johnson", feedback: "This platform made finding a supervisor so easy and efficient!" },
-    { name: "Mark Lee", feedback: "I found the perfect supervisor for my AI project in minutes." },
-    { name: "Sophia Brown", feedback: "Highly recommend this app to all final year students." },
+    { name: "Alice Johnson (UOL)", feedback: "This platform made finding a supervisor so easy and efficient!" },
+    { name: "Mark Lee (UOL)", feedback: "I found the perfect supervisor for my AI project in minutes." },
+    { name: "Sophia Brown (UOL)", feedback: "Highly recommend this app to all final year students." },
   ];
 
   return (
